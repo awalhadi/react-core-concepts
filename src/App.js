@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
+import { useEffect } from 'react';
 
 function App() {
   const friends = [
@@ -15,6 +16,7 @@ function App() {
       <header className="App-header">
         <p>Learning react</p>
         <Count></Count>
+        <User></User>
         {
           friends.map(friend => <Person friend={friend}></Person>)
         }
@@ -36,7 +38,31 @@ function Count() {
   )
 }
 
+function User() {
+  const userStyle={
+    border:"1px solid lightgray",
+    marginTop:"2rem",
+    padding:"0px 10px",
+    width:"20rem"
+  }
 
+  const [users, setUser] = useState([]);
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+    .then(res => res.json())
+    .then(data => setUser(data))
+  }, []);
+  return (
+    <div style={userStyle}>
+
+        {
+          users.map(user => (
+          <h3>User Name:{user.name} </h3>
+          ))
+        }
+  </div>
+  );
+}
 
 function Person(props){
   const {name, job} = props.friend;
